@@ -60,7 +60,8 @@ public class MapViewManager : MonoBehaviour
             var yIndex = i / 3;
 
             //string _uri = @"https://a.tile.openstreetmap.org/0/0/0.png";
-            string _uri = $"https://a.tile.openstreetmap.org/{m_ZoomLevel}/{leftXTile+xIndex}/{upYTile+yIndex}.png";
+            //string _uri = $"https://a.tile.openstreetmap.org/{m_ZoomLevel}/{leftXTile+xIndex}/{upYTile+yIndex}.png";
+            string _uri = $"https://tile.openstreetmap.org/{m_ZoomLevel}/{leftXTile + xIndex}/{upYTile + yIndex}.png";
 
             UnityWebRequest www = UnityWebRequestTexture.GetTexture( _uri );
             await www.SendWebRequest();
