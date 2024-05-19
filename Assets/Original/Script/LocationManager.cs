@@ -193,8 +193,33 @@ public class LocationManager : MonoBehaviour
         return false;
     }
 
+    public static bool CheckDistance( float targetLatitude, float targetLongitude )
+	{
+        // ロケーション情報
+        if( !Input.location.isEnabledByUser || Input.location.status != LocationServiceStatus.Running )
+        {
+            return false;
+        }
+
+        if( LocationList.Count == 0 ) return false;
+        Vector2 setData = GetLocation();
+        GeoCoordinate currentCoordinate = new GeoCoordinate( setData.x, setData.y );
+        float currentHeading = Input.compass.trueHeading;
+
+        GeoCoordinate targetCoordinate = new GeoCoordinate( targetLatitude, targetLongitude );
+        double distance = currentCoordinate.GetDistanceTo( targetCoordinate ); // 現在位置と目標位置の距離
+
+        if( 10.0f * 1000.0f < distance )
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     public static bool UpdateObjectPos( Transform cameraTransform, Transform targetTransform, float targetLatitude, float targetLongitude, float targetAltitude )
     {
+        // ロケーション情報
         if( !Input.location.isEnabledByUser || Input.location.status != LocationServiceStatus.Running )
         {
             return false;

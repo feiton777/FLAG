@@ -12,6 +12,8 @@ Icon?
 ehthumbs.db
 Thumbs.db
 
+.utmp/
+/obj/
 
 /Logs/
 /PCBuild/

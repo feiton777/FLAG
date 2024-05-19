@@ -133,11 +133,13 @@ public class FlagObjectsManager : MonoBehaviour
 
     async UniTask<int> LoadFlagObject()
 	{
+        // ロケーション情報がある程度取れるまでウェイト
 		while( LocationManager.Instance == null || LocationManager.LocationList.Count <= 30 )
 		{
 			await UniTask.Yield( PlayerLoopTiming.Update );
 		}
 
+        // リスト取得
 		string dataListString = await AsyncHttpGet( "http://feiton.xsrv.jp/FLAG_DATA/FLAG_DATA.dat" );
         string[] del = { "\n" };
         FlagDataList = dataListString.Split( del, StringSplitOptions.None ).ToList();
@@ -151,6 +153,9 @@ public class FlagObjectsManager : MonoBehaviour
 
             // hash,TANYEISCFJ7ZYLPIRXNQZCZUOM3UIDN4QOI6N5Q,32543886000,Test_Set_flag,1,298182EF0E364B30,-90.000000,-180.000000,あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん
             if( splitData.Length < 9 ) continue;
+
+            // 一定範囲外は生成しない
+            if( !LocationManager.CheckDistance( float.Parse( splitData[ 6 ] ), float.Parse( splitData[ 7 ] ) ) ) continue;
 
             var flagObject = Instantiate( m_FlagObjectPrefab );
             var flagObjectData = flagObject.GetComponent<FlagObject>();
